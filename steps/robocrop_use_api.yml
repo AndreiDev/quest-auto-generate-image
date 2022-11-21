@@ -1,0 +1,84 @@
+id: robocrop_use_api
+learningObjectives: 
+  - Using DALL-E API
+hints:
+  - Try to call the DALL-E API when creating a new product without a product image
+startFlow:
+  do:
+    - actionId: bot_message
+      params:
+        person: head-of-rd
+        messages:
+          - text: "OK, now that we have the API - let's make this happen."
+            delay: 700
+          - text: "Can you integrate DALL-E into our codebase, and make sure that we automatically generate an image for products that are uploaded without one?"
+            delay: 1200
+          - text: "I have to head out for a bit, but just create a PR when you're done and I'll review it."
+            delay: 1700
+trigger:
+  type: github_pr_lifecycle_status
+  flowNode:
+    switch:
+      key: "${eventType}"
+      cases:
+        github_pr_opened:
+          do:
+            - actionId: github_pr_comment
+              params:
+                person: head-of-rd
+                message: "On it! I'll review the changes as soon as possible! "
+        github_pr_workflow_complete_success:
+          if:
+            conditions:
+            - conditionId: github_is_file_contains
+              equals: false
+              params:
+                fileName: 'backend/models/Item.js'
+                regex: sk-
+            then:
+              do:
+                - actionId: bot_message
+                  params:
+                    person: head-of-rd
+                    messages:
+                    - text: Looking good! You can merge the PR now.
+                      delay: 1500
+                - actionId: github_pr_approve
+                  params:
+                    person: head-of-rd
+                    message: Looking good! You can merge the PR now.
+            else:    
+              do:
+              - actionId: bot_message
+                params:
+                  person: head-of-rd
+                  messages:
+                  - text: "Looks like your code has the DALL-E API key embedded in it. That's not the kind of thing we want in our source code. Please use our regular mechanism for passing secrets to production."
+                    delay: 1000
+              - actionId: github_pr_reject
+                params:
+                  person: head-of-rd
+                  message: "Looks like your code has the DALL-E API key embedded in it. That's not the kind of thing we want in our source code. Please use our regular mechanism for passing secrets to production."
+        github_pr_workflow_complete_failure:
+          do:
+            - actionId: github_pr_reject
+              params:
+                person: head-of-rd
+                message: Looks like we have a few checks failing. Please try again and make sure they all pass.
+
+            - actionId: bot_message
+              params:
+                person: head-of-rd
+                messages:
+                  - text: Looks like we have a few checks failing. Please try again and make sure they all pass.
+                    delay: 2500
+        github_pr_merged:
+          do:
+            - actionId: finish_step
+
+githubActions:
+  backend:
+    capabilities:
+      - axios
+      - dotenv
+    testFile: "backend.js"

@@ -1,0 +1,45 @@
+id: robocrop_api_key
+learningObjectives: 
+- Create a DELL-E account and get the API KEY
+hints:
+- Visit https://beta.openai.com/docs/quickstart to get learn more about the DALL-E API
+- Generate your API key at https://beta.openai.com/account/api-keys
+startFlow:
+  do:
+  - actionId: bot_message
+    params:
+      person: head-of-rd
+      messages:
+      - text: "Hey! So you know those pesky people, what do we call them? Oh, right, users! So some of these “users” are adding products without a product image - so lame. But we figured that with the newly released DALL-E API we'll never have to see a default product image again."
+        delay: 2000
+      - text: "Go ahead and sign up for DALL-E account, create a new API key, and paste the first 5 characters of the key here."
+        delay: 3500
+trigger:
+  type: user_message
+  params: 
+    person: head-of-rd
+  flowNode:
+    if:
+      conditions:
+      - conditionId: text_match_regex
+        params:
+          text: "${userMessageText}"
+          regex: "sk-"
+          flags: i
+      then:
+        do:
+        - actionId: bot_message
+          params:
+            person: head-of-rd
+            messages:
+            - text: "Got it, thanks!"
+              delay: 1300
+        - actionId: finish_step
+      else:
+        do:
+        - actionId: bot_message
+          params:
+            person: head-of-rd
+            messages:
+            - text: "Hmm, the key should start with a 'sk-'. Can you try again?"
+              delay: 2500
