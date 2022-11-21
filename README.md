@@ -1,39 +1,36 @@
-# quest-template
+# robocrop
 
 ## Quest Details 
-#### title: 
-#### level: 
-#### skills:
-#### dependencies: 
-
+#### title: Robocrop
+#### level: beginner
+#### skills: backend
+#### dependencies: docker_localsetup
 
 ## Overview 
-Explain what the quest is about and describe the main task the user needs to perform in this quest. 
-
+This quest is similar to gettingstarted (fixing a bug) - the backend-API part. if no image found on API, we want the user to generate the image from DALL-E.
 
 ## Outline
 Describe each step in the quest. 
-- Step 1 [step id]: 
-- Step 2 [step id]:
-- ...
-
+- Step 1 [robocrop_api_key]: signup to DALL-E, create an API key and paste the first 5 characters of the key on Snack
+- Step 2 [robocrop_use_api]: use DALL-E API to generate an image for the product (checking that the user didn't add the private key inside the PR)
 
 ## Textbook solution
-For each step, describle all actions the user needs to perform to complete the step, including links to PRs as they would need to be written to pass checks. 
-Before submitting your quest for review, test your quest in snack and check the instructions you wrote. Make sure that by following these instructions, you are able to successfully complete the quest.  
 ### Instructions for completing the quest: 
-#### Step 1 [step id]: 
-- Learning Objective:
+#### Step 1 [robocrop_api_key]: 
+- Learning Objective: Setting up DALL-E and getting an API key
 - Narrative:
 - Instructions: 
-- How do users pass to the next step: 
+- How do users pass to the next step: paste the first 5 characters of the API key
 - Hints:
+ - Visit https://beta.openai.com/docs/quickstart to get learn more about the DALL-E API
+ - Generate your API key at https://beta.openai.com/account/api-keys
 
  
-#### Step 2 [step id]:
-- Learning Objective:
+#### Step 2 [robocrop_use_api]:
+- Learning Objective: learning how to use 3rd party API
 - Narrative:
 - Instructions: 
-- How do users pass to the next step: 
+- How do users pass to the next step: use DALL-E API to generate an image
 - Hints:
-...
+ - Try to call the DALL-E API when creating a new product without a product image
+
