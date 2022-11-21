@@ -21,9 +21,7 @@ Describe each step in the quest.
 - Narrative:
 - Instructions: 
 - How do users pass to the next step: paste the first 5 characters of the API key
-- Hints:
- - Visit https://beta.openai.com/docs/quickstart to get learn more about the DALL-E API
- - Generate your API key at https://beta.openai.com/account/api-keys
+- Hints: Visit https://beta.openai.com/docs/quickstart to get learn more about the DALL-E API, Generate your API key at https://beta.openai.com/account/api-keys
 
  
 #### Step 2 [robocrop_use_api]:
@@ -31,6 +29,5 @@ Describe each step in the quest.
 - Narrative:
 - Instructions: 
 - How do users pass to the next step: use DALL-E API to generate an image
-- Hints:
- - Try to call the DALL-E API when creating a new product without a product image
+- Hints: Try to call the DALL-E API when creating a new product without a product image
 
