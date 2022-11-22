@@ -1,7 +1,7 @@
 id: robocrop
 title: Robocrop
-description: "Wanna add a new product, but missing the product image? That's not an issue anymore, thanks to DALL-E. Use DALL-E to generate the product image in case you don't have one"
-summary: "Generating the product image using DALL-E"
+description: "What do we we do when product images are missing? Generative AI for the win! Thanks to the DALL-E API, we can automatically create those missing images."
+summary: "Product images via Generative AI using the DALL-E API"
 level: beginner
 steps:
 - robocrop_api_key
