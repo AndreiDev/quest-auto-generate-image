@@ -11,7 +11,7 @@ startFlow:
         messages:
           - text: "OK, now that we have the API - let's make this happen."
             delay: 700
-          - text: "Can you integrate DALL-E into our codebase, and make sure that we automatically generate an image for products that are uploaded without one?"
+          - text: "Can you integrate DALL-E into our codebase, and make sure that we automatically generate an image for products that are uploaded without one? You can pass the item title to DALL-E to generate the image."
             delay: 1200
           - text: "I have to head out for a bit, but just create a PR when you're done and I'll review it."
             delay: 1700
