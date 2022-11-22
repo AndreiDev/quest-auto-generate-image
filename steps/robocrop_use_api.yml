@@ -9,7 +9,7 @@ startFlow:
       params:
         person: head-of-rd
         messages:
-          - text: "OK, now that we have the API - let's make this happen."
+          - text: "OK, now that we have the key - let's make this happen."
             delay: 700
           - text: "Can you integrate DALL-E into our codebase, and make sure that we automatically generate an image for products that are uploaded without one? You can pass the item title to DALL-E to generate the image."
             delay: 1200
