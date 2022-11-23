@@ -3,6 +3,7 @@ learningObjectives:
   - Using DALL-E API
 hints:
   - Try to call the DALL-E API when creating a new product without a product image
+  - Use `docker exec -it [DOCKER IMAGE NAME] bash` to get into the backend image and install the openai library
   - Did you extract the open api to environment variable caled OPENAI_API_KEY?
 startFlow:
   do:
