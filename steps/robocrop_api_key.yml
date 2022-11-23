@@ -1,6 +1,6 @@
 id: robocrop_api_key
 learningObjectives: 
-- Create a DELL-E account and get the API KEY
+- Creating a DELL-E account and get the API KEY
 hints:
 - Visit https://beta.openai.com/docs/quickstart to learn more about the DALL-E API
 - Generate your API key at https://beta.openai.com/account/api-keys
