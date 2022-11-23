@@ -11,9 +11,11 @@ startFlow:
         messages:
           - text: "OK, now that we have the key - let's make this happen."
             delay: 700
-          - text: "Can you integrate DALL-E into our codebase, and make sure that we automatically generate an image for products that are uploaded without one? You can pass the item title to DALL-E to generate the image."
+          - text: "We need to make sure the **backend** automatically generates an image for items that are uploaded without one."
+            delay: 800
+          - text: "Can you integrate DALL-E into our codebase? You will need to add [openapi](https://www.npmjs.com/package/openapi) to the backend. Oh, make sure to pass the item title as the prompt and set size to 256x256."
             delay: 1200
-          - text: "I have to head out for a bit, but just create a PR when you're done and I'll review it."
+          - text: "I have to head out for a bit, but just :instruction[create a PR when you're done] and I'll review it."
             delay: 1700
 trigger:
   type: github_pr_lifecycle_status
