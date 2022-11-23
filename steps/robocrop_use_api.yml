@@ -13,7 +13,7 @@ startFlow:
             delay: 700
           - text: "We need to make sure the **backend** automatically generates an image for items that are uploaded without one."
             delay: 800
-          - text: "Can you integrate DALL-E into our codebase? You will need to add [openai](https://www.npmjs.com/package/openai) to the backend. Oh, make sure to pass the item title as the prompt and set size to 256x256."
+          - text: "Can you integrate DALL-E into our codebase? Oh, make sure to pass the item title as the prompt and set size to 256x256."
             delay: 1200
           - text: "I have to head out for a bit, but just :instruction[create a PR when you're done] and I'll review it."
             delay: 1700
