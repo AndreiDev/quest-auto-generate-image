@@ -29,5 +29,5 @@ messages:
     messages:
       - text: "Beautiful! Can't believe you've already finished another project! As usual, make sure you stretch your body and treat yourself to something yummy, before we set you up with [something new](${platform.home}) to work on."
         delay: 1500
-      - text: "Let me know once you're ready for your [next thing](${platform.home}), ok?"
+      - text: "[Click here](${platform.home}) once you're ready for your next project!"
         delay: 1000
