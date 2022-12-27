@@ -6,7 +6,7 @@ level: beginner
 steps:
 - robocrop_api_key
 - robocrop_use_api
-duration: 1.5
+duration: 0.75
 skills:
 - backend
 questDependency: docker_localsetup
