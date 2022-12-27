@@ -36,7 +36,7 @@ trigger:
         github_pr_workflow_complete_success:
           if:
             conditions:
-            - conditionId: github_is_file_contains
+            - conditionId: github_does_file_contain
               equals: false
               params:
                 fileName: 'backend/models/Item.js'
