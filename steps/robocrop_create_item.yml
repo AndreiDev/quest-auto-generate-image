@@ -6,15 +6,25 @@ hints:
     Make sure your dev (local/codespace) environment is still up after you've ran `docker-compose up`. 
     Also make sure you're logged in with the user you created in the previous step.
 startFlow:
-  do:
-    - actionId: bot_message
+  if:
+    conditions:
+    - conditionId: user_has_feature_flag
+      equals: true
       params:
-        person: head-of-rd
-        messages:
-          - text: Nice! So you created a user on Anythink, let's add an item to the marketplace, to understand what it looks like. 
-            delay: 2200
-          - text: Go ahead, :instruction[**add a single item to the Marketplace**]. You can use the add item button in the header.
-            delay: 2500
+        featureFlag: 'short_robocrop'
+    then:
+      do:
+      - actionId: finish_step
+    else:
+      do:
+      - actionId: bot_message
+        params:
+          person: head-of-rd
+          messages:
+            - text: Nice! So you created a user on Anythink, let's add an item to the marketplace, to understand what it looks like. 
+              delay: 2200
+            - text: Go ahead, :instruction[**add a single item to the Marketplace**]. You can use the add item button in the header.
+              delay: 2500
 trigger:
   type: local_page_load
   flowNode:
@@ -31,7 +41,7 @@ trigger:
             params:
               person: head-of-rd
               messages:
-                - text: Good! Although, I'm going to ignore the fact that from all of the possible items in the world, you chose to go with a ${Lodash.startCase(Lodash.dropRight(path.slice(6).split("-")).join("-"))}
+                - text: Great, although, I'm going to ignore the fact that from all of the possible items in the world, you chose to go with a ${Lodash.startCase(Lodash.dropRight(path.slice(6).split("-")).join("-"))}
                   delay: 2000
           - actionId: finish_step
 solution:

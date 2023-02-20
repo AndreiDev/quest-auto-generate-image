@@ -11,11 +11,16 @@ startFlow:
       params:
         person: head-of-rd
         messages:
+          - text: "Next!"
+            delay: 1200
           - text: "I think it's just the right time for your first task!"
             delay: 1200
           - text: So you know those pesky people, what do we call them? Oh, right, users! So some of these “users” are adding products without a product image - so lame. But we figured that with the newly released DALL-E API we'll never have to see a default product image again."
             delay: 2500
-          - text: "To generate images, you'll need an API key. I've created one for you: `${secrets.OPENAI_API_KEY}`. Now let's make this happen."
+          - text: | 
+                  "To generate images, you'll need an API key. Luckily for you, I've have just that exact key: 
+                  `${secrets.OPENAI_API_KEY}`.
+                  Now let's make this happen."
             delay: 700
           - text: "We need to make sure the **backend** automatically generates an image for items that are created without one."
             delay: 800

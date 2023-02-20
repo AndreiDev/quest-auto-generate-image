@@ -2,29 +2,37 @@ id: robocrop_create_user
 hints:
   - Make sure your dev (local/codespace) environment is still up and don't forget to run `docker-compose up`.
 startFlow:
-  do:
-    - actionId: bot_message
+  if:
+    conditions:
+    - conditionId: user_has_feature_flag
+      equals: true
       params:
-        person: head-of-rd
-        messages:
-          - text: https://media.giphy.com/media/Tg6fSeh25F1b9dRCuL/giphy.gif
-            delay: 2200
-          - text: "Before we start with our first task, I want to make sure you’re familiar with the Anythink Marketplace."
-            delay: 1700
-          - text: "It’s a place where you can buy and sell anything you want."
-            delay: 1700
-          - text: "Now, let’s get to work. First let's see how the marketplace looks like."
-            delay: 1700
-          - text: If you havn't done it yet, :instruction[use the **Codespace (Web)** link on the sidebar] (or in VS Code, if you prefer) to open your development environment.
-            delay: 1500
-          - text: Once your codespace is up and running, :instruction[fire it up with **"docker-compose up"**].
-            delay: 1500
-          - text: Let docker do it's magic, and when done, :instruction[go to the **PORTS** tab and click the **Frontend** Local Address] to access your local Anythink Market.
-            delay: 2000
-          - text: https://res.cloudinary.com/wilco/image/upload/v1669628851/anythink-assets/Images%20for%20quests/Search%20quest/ports.png
-            delay: 1000
-          - text: When Anythink Marketplace loads, :instruction[**sign up** with a new user], or, **if you already have a user, you can just go to your profile page**.
-            delay: 2000
+        featureFlag: 'short_robocrop'
+    then:
+      do:
+      - actionId: finish_step
+    else:
+      do:
+      - actionId: bot_message
+        params:
+          person: head-of-rd
+          messages:
+            - text: "Before we start with our first task, I want to make sure you’re familiar with the **Anythink Marketplace**."
+              delay: 1700
+            - text: "It’s a place where you can buy and sell anything you want."
+              delay: 1700
+            - text: "Now, let’s get to work. First let's see how the marketplace looks like."
+              delay: 1700
+            - text: If you havn't done it yet, :instruction[use the **Codespace (Web)** link on the sidebar] (or in VS Code, if you prefer) to open your development environment.
+              delay: 1500
+            - text: Once your codespace is up and running, :instruction[fire it up with **"docker-compose up"**].
+              delay: 1500
+            - text: Let docker do it's magic (which might take a minute or two), and when done, :instruction[go to the **PORTS** tab and click the **Frontend** Local Address] to access your local Anythink Market.
+              delay: 2000
+            - text: https://res.cloudinary.com/wilco/image/upload/v1669628851/anythink-assets/Images%20for%20quests/Search%20quest/ports.png
+              delay: 1000
+            - text: When Anythink Marketplace loads, :instruction[**sign up** with a new user], or, **if you already have a user, you can just go to your profile page**.
+              delay: 2000
           
 trigger:
   type: local_page_load
