@@ -1,4 +1,4 @@
-id: robocrop_test
+id: robocrop
 title: Robocrop
 description: "What do we we do when product images are missing? Generative AI for the win! Thanks to the DALL-E API, we can automatically create those missing images."
 summary: "Product images via Generative AI using the DALL-E API"

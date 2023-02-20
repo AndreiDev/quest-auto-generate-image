@@ -5,7 +5,7 @@ startFlow:
   if:
     conditions:
     - conditionId: user_has_feature_flag
-      equals: true
+      equals: false
       params:
         featureFlag: 'detailed_robocrop'
     then:

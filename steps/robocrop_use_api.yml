@@ -21,7 +21,7 @@ startFlow:
             delay: 1200
           - text: "To install the package, you'll need to get into the backend container. You can do that by running `docker exec -it [DOCKER IMAGE NAME] bash` in the terminal. Then run the install command inside the container."
             delay: 1200
-          - text: "Furthermore, you'll need to use an API key. Luckily for you, I have one right here: `${secrets.OPENAI_API_KEY}`"
+          - text: "Furthermore, you'll need to use an API key. Luckily for you, I have one right here: `${OPENAI_API_KEY}`"
             delay: 2000
           - text: "Oh, and make sure you don't place the key in the code. **Use an environment variable named OPENAI_API_KEY** instead."
             delay: 1200
