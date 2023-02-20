@@ -10,10 +10,12 @@ startFlow:
     params:
       person: head-of-rd
       messages:
-      - text: "Hey! So you know those pesky people, what do we call them? Oh, right, users! So some of these “users” are adding products without a product image - so lame. But we figured that with the newly released DALL-E API we'll never have to see a default product image again."
-        delay: 2000
+      - text: "I think it's just the right time for your first task!"
+        delay: 1200
+      - text: So you know those pesky people, what do we call them? Oh, right, users! So some of these “users” are adding products without a product image - so lame. But we figured that with the newly released DALL-E API we'll never have to see a default product image again."
+        delay: 2500
       - text: "Go ahead and [sign up for a DALL-E](https://beta.openai.com/signup) account and find the 'API keys' page. :instruction[Create a new API key, and paste the first 5 characters of the key here.]"
-        delay: 3500
+        delay: 2500
 trigger:
   type: user_message
   params: 
