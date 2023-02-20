@@ -26,7 +26,7 @@ startFlow:
                   `${secrets.OPENAI_API_KEY}`
                   Now let's make this happen.
             delay: 2000
-          - text: "Oh, and make sure you don't write it in the code. **Use an environment variable named OPENAI_API_KEY** instead".
+          - text: "Oh, and make sure you don't write it in the code. **Use an environment variable named OPENAI_API_KEY** instead."
             delay: 1200
           - text: "I have to head out for a bit, but just :instruction[create a PR when you're done] and I'll review it."
             delay: 1700
