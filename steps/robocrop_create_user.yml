@@ -7,7 +7,7 @@ startFlow:
     - conditionId: user_has_feature_flag
       equals: true
       params:
-        featureFlag: 'short_robocrop'
+        featureFlag: 'detailed_robocrop'
     then:
       do:
       - actionId: finish_step
