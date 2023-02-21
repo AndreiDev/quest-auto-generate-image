@@ -2,29 +2,29 @@ id: robocrop_create_item
 learningObjectives:
   - Manually adding an item to Anythink Market
 hints:
-  - |
+  - | 
     Make sure your dev (local/codespace) environment is still up after you've ran `docker-compose up`. 
     Also make sure you're logged in with the user you created in the previous step.
 startFlow:
   if:
     conditions:
-      - conditionId: user_has_feature_flag
-        equals: false
-        params:
-          featureFlag: "detailed_robocrop"
+    - conditionId: user_has_feature_flag
+      equals: false
+      params:
+        featureFlag: 'detailed_robocrop'
     then:
       do:
-        - actionId: finish_step
+      - actionId: finish_step
     else:
       do:
-        - actionId: bot_message
-          params:
-            person: head-of-rd
-            messages:
-              - text: Nice! So you created a user on Anythink, let's add an item to the marketplace, to understand what it looks like.
-                delay: 2200
-              - text: Go ahead, :instruction[**add a single item to the Marketplace**]. You can use the add item button in the header.
-                delay: 2500
+      - actionId: bot_message
+        params:
+          person: head-of-rd
+          messages:
+            - text: Nice! So you created a user on Anythink, let's add an item to the marketplace, to understand what it looks like. 
+              delay: 2200
+            - text: Go ahead, :instruction[**add a single item to the Marketplace**]. You can use the add item button in the header.
+              delay: 2500
 trigger:
   type: local_page_load
   flowNode:
@@ -52,3 +52,4 @@ solution:
         messages:
           - text: To add a new item go to the Anythink Market and click the "New Item" button in the header.
           - text: Add a title, a description, and an image (if you have one), and publish the item.
+      

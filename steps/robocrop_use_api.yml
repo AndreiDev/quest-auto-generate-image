@@ -1,6 +1,6 @@
 id: robocrop_use_api
 learningObjectives: 
-  - Using the DALL-E API
+  - Use openAI API to generate images per request
 hints:
   - Try to call the DALL-E API when creating a new product without a product image
   - To use the API, you can either use `HTTP POST` request to `https://api.openai.com/v1/images/generations`. Or install the openAI package inside the backend container - use `docker exec -it anythink-backend-<framework> bash` to get into the backend image and install the openai library

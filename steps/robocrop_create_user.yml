@@ -1,4 +1,6 @@
 id: robocrop_create_user
+learningObjectives:
+  - Setup local environment
 hints:
   - Make sure your dev (local/codespace) environment is still up and don't forget to run `docker-compose up`.
 startFlow:
