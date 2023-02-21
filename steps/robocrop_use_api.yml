@@ -107,7 +107,8 @@ solution:
                     Now we should create a function that will call the API if no image was given. 
                     We can either install the `openai` package, or just use an HTTP request to the api. 
                     If you decide to install the package, you should use the docker bash to go inside the container and run `docker exec -it anythink-backend-node bash` then go to the `/backend` directory and run `yarn add openai`
-                    Let's see how to use the API using HTTP request.
+            - text: |
+                    Let's see another option, using http request:
                     ```
                     async function generateImage(prompt) {
                       return await axios.post('https://api.openai.com/v1/images/generations', JSON.stringify({
@@ -128,6 +129,7 @@ solution:
                           });
                       }
                     ```
+
             - text: |
                     For the function to be able to read the key from the `.env` file, we should add the following in the top of the file.
                     Also, make sure to install the `dotenv` package as well.
@@ -157,3 +159,5 @@ solution:
                       item.image = await generateImage(item.title);
                     }
                     ```
+            - text: Go ahead and implement those changes. Make sure they work locally and open a PR once you're done.
+
