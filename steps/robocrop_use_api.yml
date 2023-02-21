@@ -11,10 +11,8 @@ startFlow:
       params:
         person: head-of-rd
         messages:
-          - text: "I think it's just the right time for the first task!"
-            delay: 1200
-          - text: So you know those pesky people, what do we call them? Oh, right, users! So some of these “users” are adding products to the Anythink Market without a product image - so lame. But we figured that with the newly released DALL-E API we'll never have to see a default product image again.
-            delay: 2500
+          - text: "OK, now that we have the key - let's make this happen."
+            delay: 700
           - text: "We need to make sure the **backend** automatically generates an image for items that are created without one."
             delay: 800
           - text: "Let's integrate DALL-E into exactly for that. You will need to use [OpenAI API](https://beta.openai.com/docs/guides/images/usage). Make sure to pass the item title as the prompt and set the size to 256x256."
@@ -159,4 +157,3 @@ solution:
                       item.image = await generateImage(item.title);
                     }
                     ```
-                    

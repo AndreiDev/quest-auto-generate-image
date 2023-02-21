@@ -1,11 +1,13 @@
-id: robocrop
+id: robocrop_test
 title: Robocrop
+subtitle: Implement the DALL-E API to generate images automatically from text
 description: "What do we we do when product images are missing? Generative AI for the win! Thanks to the DALL-E API, we can automatically create those missing images."
 summary: "Product images via Generative AI using the DALL-E API"
 level: beginner
 steps:
 - robocrop_create_user
 - robocrop_create_item
+- robocrop_api_key
 - robocrop_use_api
 duration: 0.5
 skills:
