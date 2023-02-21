@@ -3,7 +3,7 @@ learningObjectives:
   - Using the DALL-E API
 hints:
   - Try to call the DALL-E API when creating a new product without a product image
-  - Use `docker exec -it [anythink-backend-<framework>] bash` to get into the backend image and install the openai library
+  - To use the API, you can either use `HTTP POST` request to `https://api.openai.com/v1/images/generations`. Or install the openAI package inside the backend container - use `docker exec -it [anythink-backend-<framework>] bash` to get into the backend image and install the openai library
   - Did you extract the open api to environment variable caled OPENAI_API_KEY? Usually using a .env file is a good idea. Just make sure you don't commit it to git.
 startFlow:
   do:
@@ -19,9 +19,7 @@ startFlow:
             delay: 800
           - text: "Let's integrate DALL-E into exactly for that. You will need to use [OpenAI API](https://beta.openai.com/docs/guides/images/usage). Make sure to pass the item title as the prompt and set the size to 256x256."
             delay: 1200
-          - text: "To install the package, you'll need to get into the backend container. You can do that by running `docker exec -it [DOCKER IMAGE NAME] bash` in the terminal. Then run the install command inside the container."
-            delay: 1200
-          - text: "Furthermore, you'll need to use an API key. Luckily for you, I have one right here: `${OPENAI_API_KEY}`"
+          - text: "For using the API, you'll need to use an API key. Luckily for you, I have one right here: `${OPENAI_API_KEY}`"
             delay: 2000
           - text: "Oh, and make sure you don't place the key in the code. **Use an environment variable named `OPENAI_API_KEY`instead.**"
             delay: 1200
@@ -94,3 +92,68 @@ githubActions:
       - axios
       - dotenv
     testFile: "backend.js"
+
+
+
+solution:
+  do:
+    - actionId: bot_message
+      params:
+        person: head-of-rd
+      paramsFramework:
+        node:
+          messages:
+            - text: Alright, first we need to make sure we set up the right environame variable for the API key.
+            - text: Let's create a file named `.env` in the `/backend` directory, and the content should be the key, like so `OPENAI_API_KEY=insert_key_here`.
+            - text: |
+                    Now we should create a function that will call the API if no image was given. 
+                    We can either install the `openai` package, or just use an HTTP request to the api. 
+                    If you decide to install the package, you should use the docker bash to go inside the container and run `docker exec -it [anythink-backend-node]` then go to the `/backend` directory and run `yarn add openai`
+                    Let's see how to use the API using HTTP request.
+                    ```
+                    async function generateImage(prompt) {
+                      return await axios.post('https://api.openai.com/v1/images/generations', JSON.stringify({
+                          'prompt': `${prompt}`,
+                          'n': 1,
+                          'size': '256x256'
+                      }), {
+                          headers: {
+                              'Content-Type': 'application/json',
+                              'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`
+                          }
+                      }).then(function (response) {
+                          return response.data.data[0].url;
+                      })
+                          .catch(function (error) {
+                              console.log(`Image genrator failed with the error: ${error}`)
+                              return '';
+                          });
+                      }```
+                      And for the function to be able to read the ket from the procce.env we should add the following in the top of the file
+                      ```
+                      const dotenv = require('dotenv');
+                      dotenv.config();
+                      ```
+
+            - text: "Last thing to do is call this function when only when no image was given"
+            - text: "Go ahead an update the relevant route at `backend/routes/api/items.js`"
+            - text: | 
+                    Search for the post route which is used to create new items. It should start with `router.post("/", ...` and make to make it async function, since our `generateImage` function is an async. Now it should look like this:
+                    ```
+                    router.post("/", auth.required, function(req, res, next) {
+                      User.findById(req.payload.id)
+                        .then(async function(user) { 
+                          ...
+                    ```
+            - text: |
+                    Now we are left with calling our new generate function when no image is given:
+                    ```
+                    var item = new Item(req.body.item);
+
+                    item.seller = user;
+
+                    if(!item.image) {
+                      item.image = await generateImage(item.title);
+                    }
+                    ```
+                    
