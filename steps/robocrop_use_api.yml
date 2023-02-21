@@ -17,7 +17,7 @@ startFlow:
             delay: 800
           - text: "Let's integrate DALL-E into exactly for that. You will need to use [OpenAI API](https://beta.openai.com/docs/guides/images/usage). Make sure to pass the item title as the prompt and set the size to 256x256."
             delay: 1200
-          - text: "For using the API, you'll need to use an API key. Luckily for you, I have one right here: `${OPENAI_API_KEY}`"
+          - text: "For using the API, you'll need to use the API key you've just created."
             delay: 2000
           - text: "Oh, and make sure you don't place the key in the code. **Use an environment variable named `OPENAI_API_KEY`instead.**"
             delay: 1200
