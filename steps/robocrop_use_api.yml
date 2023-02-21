@@ -1,10 +1,10 @@
 id: robocrop_use_api
-learningObjectives: 
-  - Using the DALL-E API
+learningObjectives:
+  - Use openAI API to generate images per request
 hints:
   - Try to call the DALL-E API when creating a new product without a product image
-  - Use `docker exec -it [DOCKER IMAGE NAME] bash` to get into the backend image and install the openai library
-  - Did you extract the open api to environment variable caled OPENAI_API_KEY?
+  - To use the API, you can either use `HTTP POST` request to `https://api.openai.com/v1/images/generations`. Or install the openAI package inside the backend container - use `docker exec -it anythink-backend-<framework> bash` to get into the backend image and install the openai library
+  - Did you extract the open api to environment variable caled OPENAI_API_KEY? Usually using a .env file is a good idea. Just make sure you don't commit it to git.
 startFlow:
   do:
     - actionId: bot_message
@@ -15,9 +15,11 @@ startFlow:
             delay: 700
           - text: "We need to make sure the **backend** automatically generates an image for items that are created without one."
             delay: 800
-          - text: "Can you integrate DALL-E into our codebase? You will need to use [OpenAI API](https://beta.openai.com/docs/guides/images/usage). Oh, make sure to pass the item title as the prompt and set the size to 256x256."
+          - text: "Let's integrate DALL-E into exactly for that. You will need to use [OpenAI API](https://beta.openai.com/docs/guides/images/usage). Make sure to pass the item title as the prompt and set the size to 256x256."
             delay: 1200
-          - text: "You'll need to use an API token, make sure you don't write it in code but using an **environment variable (OPENAI_API_KEY)**"
+          - text: "For using the API, you'll need to use the API key you've just created."
+            delay: 2000
+          - text: "Oh, and make sure you don't place the key in the code. **Use an environment variable named `OPENAI_API_KEY`instead.**"
             delay: 1200
           - text: "I have to head out for a bit, but just :instruction[create a PR when you're done] and I'll review it."
             delay: 1700
@@ -36,35 +38,35 @@ trigger:
         github_pr_workflow_complete_success:
           if:
             conditions:
-            - conditionId: github_does_file_contain
-              equals: false
-              params:
-                fileName: 'backend/models/Item.js'
-                regex: sk-
+              - conditionId: github_does_file_contain
+                equals: false
+                params:
+                  fileName: "backend/models/Item.js"
+                  regex: sk-
             then:
               do:
                 - actionId: bot_message
                   params:
                     person: head-of-rd
                     messages:
-                    - text: Looking good! You can merge the PR now.
-                      delay: 1500
+                      - text: Looking good! You can merge the PR now.
+                        delay: 1500
                 - actionId: github_pr_approve
                   params:
                     person: head-of-rd
                     message: Looking good! You can merge the PR now.
-            else:    
+            else:
               do:
-              - actionId: bot_message
-                params:
-                  person: head-of-rd
-                  messages:
-                  - text: "Looks like your code has the DALL-E API key embedded in it. That's not the kind of thing we want in our source code. Please use our regular mechanism for passing secrets to production."
-                    delay: 1000
-              - actionId: github_pr_reject
-                params:
-                  person: head-of-rd
-                  message: "Looks like your code has the DALL-E API key embedded in it. That's not the kind of thing we want in our source code. Please use our regular mechanism for passing secrets to production."
+                - actionId: bot_message
+                  params:
+                    person: head-of-rd
+                    messages:
+                      - text: "Looks like your code has the DALL-E API key embedded in it. That's not the kind of thing we want in our source code. Please use our regular mechanism for passing secrets to production."
+                        delay: 1000
+                - actionId: github_pr_reject
+                  params:
+                    person: head-of-rd
+                    message: "Looks like your code has the DALL-E API key embedded in it. That's not the kind of thing we want in our source code. Please use our regular mechanism for passing secrets to production."
         github_pr_workflow_complete_failure:
           do:
             - actionId: github_pr_reject
@@ -88,3 +90,71 @@ githubActions:
       - axios
       - dotenv
     testFile: "backend.js"
+
+solution:
+  do:
+    - actionId: bot_message
+      params:
+        person: head-of-rd
+      paramsFramework:
+        node:
+          messages:
+            - text: Alright, first we need to make sure we set up the right environment variable for the API key.
+            - text: Let's create a file named `.env` in the `/backend` directory, and the content should be the key, like so `OPENAI_API_KEY=insert_key_here`.
+            - text: |
+                Now we should create a function that will call the API if no image was given. 
+                We can either install the `openai` package, or just use an HTTP request to the api. 
+                If you decide to install the package, you should use the docker bash to go inside the container and run `docker exec -it anythink-backend-node bash` then go to the `/backend` directory and run `yarn add openai`
+            - text: |
+                Let's see another option, using http request:
+                ```
+                async function generateImage(prompt) {
+                  return await axios.post('https://api.openai.com/v1/images/generations', JSON.stringify({
+                      'prompt': `${prompt}`,
+                      'n': 1,
+                      'size': '256x256'
+                  }), {
+                      headers: {
+                          'Content-Type': 'application/json',
+                          'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`
+                      }
+                  }).then(function (response) {
+                      return response.data.data[0].url;
+                  })
+                      .catch(function (error) {
+                          console.log(`Image genrator failed with the error: ${error}`)
+                          return '';
+                      });
+                  }
+                ```
+
+            - text: |
+                For the function to be able to read the key from the `.env` file, we should add the following in the top of the file.
+                Also, make sure to install the `dotenv` package as well.
+                ```
+                const dotenv = require('dotenv');
+                dotenv.config();
+                ```
+
+            - text: "Last thing to do is call this function only when no image was given"
+            - text: "Go ahead an update the relevant route at `backend/routes/api/items.js`"
+            - text: |
+                Search for the post route which is used to create new items. It should start with `router.post("/", ...` and make to make it async function, since our `generateImage` function is an async. Now it should look like this:
+                ```
+                router.post("/", auth.required, function(req, res, next) {
+                  User.findById(req.payload.id)
+                    .then(async function(user) { 
+                      ...
+                ```
+            - text: |
+                Now we are left with calling our new generate function when no image is given:
+                ```
+                var item = new Item(req.body.item);
+
+                item.seller = user;
+
+                if(!item.image) {
+                  item.image = await generateImage(item.title);
+                }
+                ```
+            - text: Go ahead and implement those changes. Make sure they work locally and open a PR once you're done.
