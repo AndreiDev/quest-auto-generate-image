@@ -4,7 +4,7 @@ learningObjectives:
 hints:
   - Try to call the DALL-E API when creating a new product without a product image
   - To use the API, you can either use `HTTP POST` request to `https://api.openai.com/v1/images/generations`. Or install the openAI package inside the backend container - use `docker exec -it anythink-backend-<framework> bash` to get into the backend image and install the openai library
-  - Did you extract the open api to environment variable caled OPENAI_API_KEY? Usually using a .env file is a good idea. Just make sure you don't commit it to git.
+  - Did you extract the open api to environment variable caled OPENAI_API_KEY? Either by adding it to the `docker-compose.yml` or using a .env file. Just make sure you don't commit it to git.
 startFlow:
   do:
     - actionId: bot_message
@@ -97,10 +97,76 @@ solution:
       params:
         person: head-of-rd
       paramsFramework:
+        python:
+          - messages:
+            - text: Alright, first we need to make sure we set up the right environment variable for the API key.
+            - text: Go to the `docker-compose.yml` file, look at the backend service and search for the `environment` section. Add the following line `- OPENAI_API_KEY: YOUR_API_KEY`.
+            - text: |
+                Now we should install the open ai package. Open a new session in codespace terminal inside the codespace. Then run `docker exec -it anythink-backend-python bash`
+                This command opens a new bash session inside the python docker container. 
+                Next we should go inside the backend directory. Run `cd backend`.
+                And now we can install the package by using `poetry add openai`
+            - text: |
+                Next, we should make sure the API is called when creating a new product without a product image.
+                We can do that by heading over to the `backend/app/api/routes/items/items_resource.py`file, where we handle requests for `/items` route in the server. 
+                There we can find the `create_new_item` function which handles `POST` requests for creating new items.
+                First, the function checks that the item is not already exists. After this validation - let's add the following logic which is called only when no image was given.
+                ```
+                    if not item_create.image:
+                      response = openai.Image.create(
+                          prompt=item_create.title,
+                          n=1,
+                          size='256x256'
+                      )
+                      item_create.image = response['data'][0]['url']
+                  ```
+            - text: |
+                Two last things - first we should import the `openai` package, by adding `import openai` in the top of the file. 
+                Second, we need to set the openAI key. Therefore we should read the key from the evniroment variable we set earlier.
+                You can add the next line in the same file: 
+                ```
+                openai.api_key = os.getenv('OPENAI_API_KEY')
+                ``` 
+            - text: Go ahead and implement those changes. Make sure they work locally and open a PR once you're done.
+
+        rails:
+            messages:
+              - text: Alright, first we need to make sure we set up the right environment variable for the API key.
+              - text: Go to the `docker-compose.yml` file, look at the backend service and search for the `environment` section. Add the following line `- OPENAI_API_KEY: YOUR_API_KEY`.
+              - text: |
+                  Now we should create a function that will call the API if no image was given. 
+                  We can either install the `openai` package, or just use an HTTP request to the api. 
+                  If you decide to install the package, you should add the following line to your Gemfile `gem "ruby-openai"`. Then kill the docker container and run `docker-compose up` again to make sure it is installed. 
+              - text: |
+                  Next, we should make sure the API is called when creating a new product without a product image.
+                  You can do that by adding the following code to the `create` method in the `items_controller.rb` file:
+                  ```
+                    if @item.image.blank?
+                      openAIClient = OpenAI::Client.new
+                      response = openAIClient.images.generate(
+                        parameters: {
+                          prompt: @item.title,
+                          size: "256x256"
+                        }
+                      )
+                      @item.image = response.dig("data", 0, "url")
+                    end
+                  ```
+                  Don't forget to add `require "ruby/openai"` at the top of the file, if you installed the package.
+              - text: |
+                  Lastly, we should make sure the API key is configured withing the package.
+                  This can be done by creating a new file: `config/initializers/openai.rb` and adding the following code:
+                  ```
+                    Ruby::OpenAI.configure do |config|
+                      config.access_token = ENV['OPENAI_API_KEY']
+                    end
+                  ```
+              - text: Go ahead and implement this changes. Make sure they work locally and open a PR once you're done.
+
         node:
           messages:
             - text: Alright, first we need to make sure we set up the right environment variable for the API key.
-            - text: Let's create a file named `.env` in the `/backend` directory, and the content should be the key, like so `OPENAI_API_KEY=insert_key_here`.
+            - text: Go to the `docker-compose.yml` file, look at the backend service and search for the `environment` section. Add the following line `- OPENAI_API_KEY: YOUR_API_KEY`.
             - text: |
                 Now we should create a function that will call the API if no image was given. 
                 We can either install the `openai` package, or just use an HTTP request to the api. 
@@ -126,14 +192,6 @@ solution:
                           return '';
                       });
                   }
-                ```
-
-            - text: |
-                For the function to be able to read the key from the `.env` file, we should add the following in the top of the file.
-                Also, make sure to install the `dotenv` package as well.
-                ```
-                const dotenv = require('dotenv');
-                dotenv.config();
                 ```
 
             - text: "Last thing to do is call this function only when no image was given"
