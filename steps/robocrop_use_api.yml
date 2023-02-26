@@ -98,7 +98,7 @@ solution:
         person: head-of-rd
       paramsFramework:
         python:
-          - messages:
+          messages:
             - text: Alright, first we need to make sure we set up the right environment variable for the API key.
             - text: "Go to the `docker-compose.yml` file, look at the backend service and search for the `environment` section. Add the following line `- OPENAI_API_KEY: YOUR_API_KEY`."
             - text: |
@@ -130,38 +130,38 @@ solution:
             - text: Go ahead and implement those changes. Make sure they work locally and open a PR once you're done.
 
         rails:
-            messages:
-              - text: Alright, first we need to make sure we set up the right environment variable for the API key.
-              - text: "Go to the `docker-compose.yml` file, look at the backend service and search for the `environment` section. Add the following line `- OPENAI_API_KEY: YOUR_API_KEY`."
-              - text: |
-                  Now we should create a function that will call the API if no image was given. 
-                  We can either install the `openai` package, or just use an HTTP request to the api. 
-                  If you decide to install the package, you should add the following line to your Gemfile `gem "ruby-openai"`. Then kill the docker container and run `docker-compose up` again to make sure it is installed. 
-              - text: |
-                  Next, we should make sure the API is called when creating a new product without a product image.
-                  You can do that by adding the following code to the `create` method in the `items_controller.rb` file:
-                  ```
-                    if @item.image.blank?
-                      openAIClient = OpenAI::Client.new
-                      response = openAIClient.images.generate(
-                        parameters: {
-                          prompt: @item.title,
-                          size: "256x256"
-                        }
-                      )
-                      @item.image = response.dig("data", 0, "url")
-                    end
-                  ```
-                  Don't forget to add `require "ruby/openai"` at the top of the file, if you installed the package.
-              - text: |
-                  Lastly, we should make sure the API key is configured withing the package.
-                  This can be done by creating a new file: `config/initializers/openai.rb` and adding the following code:
-                  ```
-                    Ruby::OpenAI.configure do |config|
-                      config.access_token = ENV['OPENAI_API_KEY']
-                    end
-                  ```
-              - text: Go ahead and implement this changes. Make sure they work locally and open a PR once you're done.
+          messages:
+            - text: Alright, first we need to make sure we set up the right environment variable for the API key.
+            - text: "Go to the `docker-compose.yml` file, look at the backend service and search for the `environment` section. Add the following line `- OPENAI_API_KEY: YOUR_API_KEY`."
+            - text: |
+                Now we should create a function that will call the API if no image was given. 
+                We can either install the `openai` package, or just use an HTTP request to the api. 
+                If you decide to install the package, you should add the following line to your Gemfile `gem "ruby-openai"`. Then kill the docker container and run `docker-compose up` again to make sure it is installed. 
+            - text: |
+                Next, we should make sure the API is called when creating a new product without a product image.
+                You can do that by adding the following code to the `create` method in the `items_controller.rb` file:
+                ```
+                  if @item.image.blank?
+                    openAIClient = OpenAI::Client.new
+                    response = openAIClient.images.generate(
+                      parameters: {
+                        prompt: @item.title,
+                        size: "256x256"
+                      }
+                    )
+                    @item.image = response.dig("data", 0, "url")
+                  end
+                ```
+                Don't forget to add `require "ruby/openai"` at the top of the file, if you installed the package.
+            - text: |
+                Lastly, we should make sure the API key is configured withing the package.
+                This can be done by creating a new file: `config/initializers/openai.rb` and adding the following code:
+                ```
+                  Ruby::OpenAI.configure do |config|
+                    config.access_token = ENV['OPENAI_API_KEY']
+                  end
+                ```
+            - text: Go ahead and implement this changes. Make sure they work locally and open a PR once you're done.
 
         node:
           messages:
