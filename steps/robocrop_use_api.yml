@@ -100,7 +100,7 @@ solution:
         python:
           - messages:
             - text: Alright, first we need to make sure we set up the right environment variable for the API key.
-            - text: Go to the `docker-compose.yml` file, look at the backend service and search for the `environment` section. Add the following line `- OPENAI_API_KEY: YOUR_API_KEY`.
+            - text: "Go to the `docker-compose.yml` file, look at the backend service and search for the `environment` section. Add the following line `- OPENAI_API_KEY: YOUR_API_KEY`."
             - text: |
                 Now we should install the open ai package. Open a new session in codespace terminal inside the codespace. Then run `docker exec -it anythink-backend-python bash`
                 This command opens a new bash session inside the python docker container. 
