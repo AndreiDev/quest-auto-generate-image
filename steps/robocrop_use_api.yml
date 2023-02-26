@@ -100,17 +100,22 @@ solution:
         python:
           messages:
             - text: Alright, first we need to make sure we set up the right environment variable for the API key.
-            - text: "Go to the `docker-compose.yml` file, look at the backend service and search for the `environment` section. Add the following line `- OPENAI_API_KEY: YOUR_API_KEY`."
+            - text: | 
+                Go to the `docker-compose.yml` file, look at the backend service and search for the `environment` section. Add the following line 
+                ```
+                - OPENAI_API_KEY: YOUR_API_KEY
+                ```
             - text: |
-                Now we should install the open ai package. Open a new session in codespace terminal inside the codespace. Then run `docker exec -it anythink-backend-python bash`
+                Now we should install the open ai package. Open a new terminal inside the codespace. Then run `docker exec -it anythink-backend-python bash`
                 This command opens a new bash session inside the python docker container. 
-                Next we should go inside the backend directory. Run `cd backend`.
+                Next we should go inside the backend directory with `cd backend`
                 And now we can install the package by using `poetry add openai`
+                Now kill the the docker by running `ctrl + c` where the docker is running and start it again with `docker-compose up`. This will make sure we have our docker container updated.
             - text: |
                 Next, we should make sure the API is called when creating a new product without a product image.
                 We can do that by heading over to the `backend/app/api/routes/items/items_resource.py`file, where we handle requests for `/items` route in the server. 
                 There we can find the `create_new_item` function which handles `POST` requests for creating new items.
-                First, the function checks that the item is not already exists. After this validation - let's add the following logic which is called only when no image was given.
+                First, the function checks that the item is not already exists. After this validation - let's check if an item has no image. If so - we'll generate one.
                 ```
                     if not item_create.image:
                       response = openai.Image.create(
@@ -123,7 +128,7 @@ solution:
             - text: |
                 Two last things - first we should import the `openai` package, by adding `import openai` in the top of the file. 
                 Second, we need to set the openAI key. Therefore we should read the key from the evniroment variable we set earlier.
-                You can add the next line in the same file: 
+                This can be done by adding this in the same file: 
                 ```
                 openai.api_key = os.getenv('OPENAI_API_KEY')
                 ``` 
