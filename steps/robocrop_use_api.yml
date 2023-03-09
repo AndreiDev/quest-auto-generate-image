@@ -197,7 +197,11 @@ solution:
                       });
                   }
                 ```
-
+            - text: |
+                Don't forget to add `axios` as a dependancy
+                ```
+                var axios =require("axios");
+                ```
             - text: "Last thing to do is call this function only when no image was given"
             - text: "Go ahead an update the relevant route at `backend/routes/api/items.js`"
             - text: |
