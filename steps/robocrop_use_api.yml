@@ -136,7 +136,7 @@ solution:
         rails:
           messages:
             - text: Alright, first we need to make sure we set up the right environment variable for the API key.
-            - text: "Go to the `docker-compose.yml` file, look at the backend service and search for the `environment` section. Add the following line `- OPENAI_API_KEY: YOUR_API_KEY`."
+            - text: "Go to the `docker-compose.yml` file, look at the backend service and search for the `environment` section. Add the following line `- OPENAI_API_KEY=YOUR_API_KEY`."
             - text: |
                 Now we should create a function that will call the API if no image was given. 
                 We can either install the `openai` package, or just use an HTTP request to the api. 
@@ -170,7 +170,7 @@ solution:
         node:
           messages:
             - text: Alright, first we need to make sure we set up the right environment variable for the API key.
-            - text: "Go to the `docker-compose.yml` file, look at the backend service and search for the `environment` section. Add the following line `- OPENAI_API_KEY: YOUR_API_KEY`."
+            - text: "Go to the `docker-compose.yml` file, look at the backend service and search for the `environment` section. Add the following line `- OPENAI_API_KEY=YOUR_API_KEY`."
             - text: |
                 Now we should create a function that will call the API if no image was given. 
                 We can either install the `openai` package, or just use an HTTP request to the api. 
