@@ -29,6 +29,7 @@ const createItem = async (client) => {
             title: "title",
             description: "description",
             tag_list: ["tag1"],
+            image: "",
         },
     };
     const itemRes = await client.post(`/api/items`, item);
